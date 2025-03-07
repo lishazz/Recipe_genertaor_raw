@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef & User Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar {
+            background: linear-gradient(to right, #ffbb33, #ffdd55);
+            padding: 15px;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff !important;
+        }
+        .btn-custom {
+            background-color: #ffbb33;
+            color: #fff;
+            border-radius: 25px;
+            transition: 0.3s;
+            padding: 10px 20px;
+            font-weight: bold;
+        }
+        .btn-custom:hover {
+            background-color: #ff9900;
+        }
+        .dashboard-header {
+            background: linear-gradient(to right, #ffdd55, #ffbb33);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .list-group-item {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-group button {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">Chef & User Management</a>
+            <button class="btn btn-custom" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+    
+    <section class="container mt-4">
+        <div class="dashboard-header">
+            <h2>Manage Chefs & Users</h2>
+            <p>Enable, disable, or delete chefs and users.</p>
+        </div>
+        <ul class="list-group" id="user-list">
+            <li class="list-group-item">👨‍🍳 Chef John Doe 
+                <div class="btn-group">
+                    <button class="btn btn-warning btn-sm">Disable</button>
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </div>
+            </li>
+            <li class="list-group-item">👤 User Jane Smith 
+                <div class="btn-group">
+                    <button class="btn btn-success btn-sm">Enable</button>
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </div>
+            </li>
+            <li class="list-group-item">👨‍🍳 Chef Marco Rossi 
+                <div class="btn-group">
+                    <button class="btn btn-success btn-sm">Enable</button>
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </div>
+            </li>
+            <li class="list-group-item">👤 User Emily Johnson 
+                <div class="btn-group">
+                    <button class="btn btn-warning btn-sm">Disable</button>
+                    <button class="btn btn-danger btn-sm">Delete</button>
+                </div>
+            </li>
+        </ul>
+    </section>
+    
+    <footer class="text-center py-3" style="background: #fff; margin-top: 20px;">
+        <p>&copy; 2025 AI Recipe Generator. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
