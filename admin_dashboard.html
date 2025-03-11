@@ -8,61 +8,132 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
             font-family: 'Poppins', sans-serif;
         }
         .navbar {
-            background: linear-gradient(to right, #ffbb33, #ffbb33);
+            background: linear-gradient(to right, #ffbb33, #ff9900);
             padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .navbar-brand {
             font-weight: bold;
             color: #fff !important;
+            font-size: 1.5rem;
         }
         .btn-custom {
-            background-color: #ffbb33;
-            color: #fff;
+            background-color: #fff;
+            color: #ff9900;
             border-radius: 25px;
             transition: 0.3s;
             padding: 10px 20px;
             font-weight: bold;
+            border: none;
         }
         .btn-custom:hover {
-            background-color: #ff9900;
+            background-color: #f2f2f2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .dashboard-header {
-            background: linear-gradient(to right, #ffbb33, #ffbb33);
+            background: linear-gradient(to right, #ffbb33, #ff9900);
             color: #fff;
             padding: 20px;
             border-radius: 10px;
-            text-align: center;
             margin-bottom: 20px;
             font-weight: bold;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .list-group-item {
-            background: #fff;
+        .dashboard-header h2 {
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .dashboard-header p {
+            margin-bottom: 0;
+            opacity: 0.9;
+        }
+        .card {
             border-radius: 10px;
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
-            padding: 15px;
-            font-weight: bold;
+            margin-bottom: 20px;
+            border: none;
+            transition: transform 0.3s;
         }
-        .chart-container {
-            background: #fff;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .list-group-item {
+            border: none;
+            border-bottom: 1px solid #f2f2f2;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+        .rating {
+            background-color: #ffbb33;
+            color: white;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-weight: bold;
+            min-width: 45px;
+            text-align: center;
+        }
+        .recipe-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-sm {
+            border-radius: 20px;
+            padding: 5px 10px;
+        }
+        .chart-card {
+            padding: 20px;
+            height: 100%;
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-            width: 45%;
-            float: left;
-            margin-right: 5%;
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .recipes-container {
-            width: 50%;
-            float: right;
+        .stats-card h3 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
-        .clearfix {
-            clear: both;
+        .stats-card p {
+            margin-bottom: 0;
+            opacity: 0.8;
+        }
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            border-radius: 25px;
+            padding: 10px 20px;
+            padding-left: 40px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: #999;
+        }
+        .footer {
+            background: white;
+            padding: 20px 0;
+            margin-top: 40px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
@@ -70,54 +141,182 @@
     
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">Admin Dashboard</a>
-            <button class="btn btn-custom" onclick="logout()">Logout</button>
+            <a class="navbar-brand" href="#">🍳 AI Recipe Generator</a>
+            <div>
+                <button class="btn btn-custom me-2">
+                    <i class="bi bi-bell"></i> Notifications
+                </button>
+                <button class="btn btn-custom" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+            </div>
         </div>
     </nav>
     
-    <section class="container mt-4">
-        <div class="chart-container">
-            <h2 class="text-center">Trending Recipes</h2>
-            <canvas id="trendingChart"></canvas>
-        </div>
-        <div class="recipes-container">
-            <div class="dashboard-header">
-                <h2>Top Rated Recipes</h2>
-                <p>Check the most popular recipes based on user ratings.</p>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="dashboard-header text-center">
+                    <h2>Admin Dashboard</h2>
+                    <p>Manage and monitor all AI-generated recipes</p>
+                </div>
             </div>
-            <ul class="list-group" id="top-rated-recipes">
-                <li class="list-group-item">⭐ Spaghetti Carbonara (4.9)</li>
-                <li class="list-group-item">⭐ Chicken Alfredo (4.5)</li>
-                <li class="list-group-item">⭐ Vegan Tofu Stir-fry (5.0)</li>
-                <li class="list-group-item">⭐ Grilled Salmon (4.7)</li>
-                <li class="list-group-item">⭐ Classic Cheeseburger (4.6)</li>
-            </ul>
         </div>
-    </section>
-    
-    <section class="container mt-4 clearfix">
-        <div class="dashboard-header">
-            <h2>All Generated Recipes</h2>
-            <p>Browse through the complete list of AI-generated recipes.</p>
+        
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>125</h3>
+                    <p>Total Recipes</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>4.7</h3>
+                    <p>Avg Rating</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>542</h3>
+                    <p>Users</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h3>28</h3>
+                    <p>New Today</p>
+                </div>
+            </div>
         </div>
-        <ul class="list-group" id="all-recipes">
-            <li class="list-group-item">🍽️ Quinoa Avocado Salad (4.2)</li>
-            <li class="list-group-item">🍽️ Spicy Ramen Bowl (4.3)</li>
-            <li class="list-group-item">🍽️ Paneer Butter Masala (4.8)</li>
-            <li class="list-group-item">🍽️ BBQ Chicken Pizza (4.5)</li>
-            <li class="list-group-item">🍽️ Mango Chia Pudding (4.9)</li>
-        </ul>
-    </section>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card chart-card">
+                    <h4 class="mb-4 text-center">Trending Recipes</h4>
+                    <canvas id="trendingChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0">Top Rated Recipes</h4>
+                    </div>
+                    <ul class="list-group list-group-flush" id="top-rated-recipes">
+                        <li class="list-group-item">
+                            <span>🍝 Spaghetti Carbonara</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.9</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span>🍗 Chicken Alfredo</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.5</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span>🥬 Vegan Tofu Stir-fry</span>
+                            <div class="recipe-actions">
+                                <span class="rating">5.0</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span>🐟 Grilled Salmon</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.7</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span>🍔 Classic Cheeseburger</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.6</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">All Generated Recipes</h4>
+                        <div class="search-container">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" class="form-control search-input" placeholder="Search recipes...">
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush" id="all-recipes">
+                        <li class="list-group-item">
+                            <span>🥗 Quinoa Avocado Salad</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.2</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span>🍜 Spicy Ramen Bowl</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.3</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span>🧀 Paneer Butter Masala</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.8</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span>🍕 BBQ Chicken Pizza</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.5</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span>🥭 Mango Chia Pudding</span>
+                            <div class="recipe-actions">
+                                <span class="rating">4.9</span>
+                                <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="card-footer bg-white d-flex justify-content-between">
+                        <button class="btn btn-custom">Previous</button>
+                        <div>Page 1 of 5</div>
+                        <button class="btn btn-custom">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
-    <footer class="text-center py-3" style="background: #fff; margin-top: 20px;">
-        <p>&copy; 2025 AI Recipe Generator. All rights reserved.</p>
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2025 AI Recipe Generator. All rights reserved.</p>
+        </div>
     </footer>
     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const ctx = document.getElementById('trendingChart').getContext('2d');
         const trendingChart = new Chart(ctx, {
-            type: 'pie',
+            type: 'doughnut',
             data: {
                 labels: ['Spaghetti Carbonara', 'Chicken Alfredo', 'Vegan Tofu Stir-fry', 'Grilled Salmon', 'Classic Cheeseburger'],
                 datasets: [{
@@ -129,8 +328,18 @@
             },
             options: {
                 responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                cutout: '70%'
             }
         });
+
+        function logout() {
+            alert('Logout functionality would go here');
+        }
     </script>
 </body>
 </html>
