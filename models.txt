@@ -1,0 +1,74 @@
+from django.db import models
+from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
+from django.utils import timezone
+
+
+def to_title_case(text):
+    return text.title()
+
+# Create your models here.
+
+#class Customer(models.Model):
+ #   user = models.OneToOneField(User, on_delete=models.CASCADE)
+  #  email = models.EmailField(max_length=100,unique=True)
+   # name = models.CharField(max_length=50)
+    #is_active = models.BooleanField(default=True)
+
+    #def __str__(self):
+     #   return f"Customer: {self.name} ({self.email})"
+
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=50)
+    category = models.CharField(max_length=20)
+    calories_per_100g = models.FloatField()
+    protein_per_100g = models.FloatField()
+    carbs_per_100g = models.FloatField() 
+    fats_per_100g = models.FloatField()
+
+    def __str__(self):
+        return f"Ingredient: {self.name} ({self.category})"
+
+
+class Recipe(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    instruction = models.TextField()
+    cook_time = models.IntegerField(help_text="Time in minutes")
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    ai_generated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Recipe: {self.title} ({self.description})"
+
+
+class RecipeIngredient(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity = models.FloatField(help_text="Quantity in standard units")
+
+    def __str__(self):
+        return f"{self.quantity} of {self.ingredient.name} in {self.recipe.title}"
+
+class GenerateRecipe(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    input_ingredients = models.TextField()
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Generated Recipe {self.recipe.title} by {self.user.username}"
+
+
+class Rating(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)],
+        help_text="Rating from 1 to 5"
+    )
+    review = models.TextField()
+
+    def __str__(self):
+        return f"Rating {self.rating} for {self.recipe.title} by {self.user.username}"
