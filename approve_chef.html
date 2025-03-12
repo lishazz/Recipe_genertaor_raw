@@ -5,53 +5,191 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Approve Chefs</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
             font-family: 'Poppins', sans-serif;
+            color: #333;
         }
         .navbar {
-            background: linear-gradient(to right, #ffbb33, #ffdd33);
+            background: linear-gradient(to right, #ff9500, #ffcc00);
             padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .navbar-brand {
-            font-weight: bold;
+            font-weight: 700;
             color: #fff !important;
+            font-size: 1.5rem;
         }
         .btn-custom {
-            background-color: #ffbb33;
+            background-color: #ff9500;
             color: #fff;
             border-radius: 25px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             padding: 10px 20px;
-            font-weight: bold;
+            font-weight: 600;
+            border: none;
         }
         .btn-custom:hover {
-            background-color: #ffdd33;
+            background-color: #e68a00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         .dashboard-header {
-            background: linear-gradient(to right, #ffdd33, #ffbb33);
+            background: linear-gradient(to right, #ffcc00, #ff9500);
             color: #fff;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 15px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-weight: bold;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .list-group-item {
             background: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
-            padding: 15px;
-            font-weight: bold;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 15px;
+            padding: 20px;
+            font-weight: 500;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .list-group-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .chef-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .chef-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .chef-details {
+            font-size: 0.9rem;
+            color: #666;
         }
         .btn-group button {
-            margin-left: 5px;
+            margin-left: 8px;
+            padding: 8px 15px;
+            font-weight: 500;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .btn-approve {
+            background-color: #28a745;
+            border: none;
+        }
+        .btn-approve:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .btn-reject {
+            background-color: #dc3545;
+            border: none;
+        }
+        .btn-reject:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+        .btn-view {
+            background-color: #17a2b8;
+            border: none;
+            color: white;
+        }
+        .btn-view:hover {
+            background-color: #138496;
+            transform: translateY(-2px);
+        }
+        .chef-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ffcc00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+        .chef-row {
+            display: flex;
+            align-items: center;
+        }
+        .badge-specialty {
+            background-color: #f8f9fa;
+            color: #666;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .modal-content {
+            border-radius: 15px;
+        }
+        .modal-header {
+            background: linear-gradient(to right, #ffcc00, #ff9500);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ff9500;
+        }
+        .stats-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        footer {
+            background: white;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid #eee;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
         }
     </style>
 </head>
@@ -59,42 +197,165 @@
     
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">Approve Chefs</a>
-            <button class="btn btn-custom" onclick="logout()">Logout</button>
+            <a class="navbar-brand" href="#"><i class="fas fa-utensils me-2"></i>Chef Approval Portal</a>
+            <div>
+                <button class="btn btn-light me-2 position-relative">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="btn btn-custom" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+            </div>
         </div>
     </nav>
     
     <section class="container mt-4">
         <div class="dashboard-header">
-            <h2>Pending Chef Approvals</h2>
-            <p>Review and approve chef registrations.</p>
+            <h2><i class="fas fa-user-check me-2"></i>Chef Approval Dashboard</h2>
+            <p>Review and manage chef applications for your platform</p>
         </div>
-        <ul class="list-group" id="pending-chefs">
-            <li class="list-group-item">👨‍🍳 Chef Alex Johnson
-                <div class="btn-group">
-                    <button class="btn btn-success btn-sm">Approve</button>
-                    <button class="btn btn-danger btn-sm">Reject</button>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-number">12</div>
+                    <div class="stats-label">Pending Approvals</div>
                 </div>
-            </li>
-            <li class="list-group-item">👨‍🍳 Chef Maria Lopez
-                <div class="btn-group">
-                    <button class="btn btn-success btn-sm">Approve</button>
-                    <button class="btn btn-danger btn-sm">Reject</button>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-number">45</div>
+                    <div class="stats-label">Approved Chefs</div>
                 </div>
-            </li>
-            <li class="list-group-item">👨‍🍳 Chef David Smith
-                <div class="btn-group">
-                    <button class="btn btn-success btn-sm">Approve</button>
-                    <button class="btn btn-danger btn-sm">Reject</button>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-number">8</div>
+                    <div class="stats-label">Rejected Applications</div>
                 </div>
-            </li>
-        </ul>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Search chefs..." id="search-input">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="filter-specialty">
+                        <option value="">All Specialties</option>
+                        <option value="italian">Italian</option>
+                        <option value="asian">Asian</option>
+                        <option value="baking">Baking</option>
+                        <option value="vegan">Vegan</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-custom w-100" id="filter-button">Filter</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="chefs-container">
+            <ul class="list-group" id="pending-chefs">
+                <li class="list-group-item">
+                    <div class="chef-row">
+                        <div class="chef-avatar">👨‍🍳</div>
+                        <div class="chef-info">
+                            <div class="chef-name">Alex Johnson</div>
+                            <div class="chef-details">
+                                <span><i class="fas fa-map-marker-alt me-1"></i>New York</span> • 
+                                <span><i class="fas fa-utensils me-1"></i>Italian Cuisine</span>
+                            </div>
+                            <div class="mt-1">
+                                <span class="badge-specialty">Pasta</span>
+                                <span class="badge-specialty">Pizza</span>
+                                <span class="badge-specialty">Seafood</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-view" onclick="viewChef('alex')"><i class="fas fa-eye me-1"></i>View</button>
+                        <button class="btn btn-approve" onclick="approveChef('alex')"><i class="fas fa-check me-1"></i>Approve</button>
+                        <button class="btn btn-reject" onclick="rejectChef('alex')"><i class="fas fa-times me-1"></i>Reject</button>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="chef-row">
+                        <div class="chef-avatar">👩‍🍳</div>
+                        <div class="chef-info">
+                            <div class="chef-name">Maria Lopez</div>
+                            <div class="chef-details">
+                                <span><i class="fas fa-map-marker-alt me-1"></i>Los Angeles</span> • 
+                                <span><i class="fas fa-utensils me-1"></i>Mexican Cuisine</span>
+                            </div>
+                            <div class="mt-1">
+                                <span class="badge-specialty">Tacos</span>
+                                <span class="badge-specialty">Enchiladas</span>
+                                <span class="badge-specialty">Desserts</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-view" onclick="viewChef('maria')"><i class="fas fa-eye me-1"></i>View</button>
+                        <button class="btn btn-approve" onclick="approveChef('maria')"><i class="fas fa-check me-1"></i>Approve</button>
+                        <button class="btn btn-reject" onclick="rejectChef('maria')"><i class="fas fa-times me-1"></i>Reject</button>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div class="chef-row">
+                        <div class="chef-avatar">👨‍🍳</div>
+                        <div class="chef-info">
+                            <div class="chef-name">David Smith</div>
+                            <div class="chef-details">
+                                <span><i class="fas fa-map-marker-alt me-1"></i>Chicago</span> • 
+                                <span><i class="fas fa-utensils me-1"></i>Baking</span>
+                            </div>
+                            <div class="mt-1">
+                                <span class="badge-specialty">Bread</span>
+                                <span class="badge-specialty">Pastries</span>
+                                <span class="badge-specialty">Cakes</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-view" onclick="viewChef('david')"><i class="fas fa-eye me-1"></i>View</button>
+                        <button class="btn btn-approve" onclick="approveChef('david')"><i class="fas fa-check me-1"></i>Approve</button>
+                        <button class="btn btn-reject" onclick="rejectChef('david')"><i class="fas fa-times me-1"></i>Reject</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Empty state (initially hidden) -->
+        <div class="empty-state d-none" id="empty-state">
+            <img src="/api/placeholder/200/200" alt="No chefs" class="mb-3">
+            <h4>No chef applications found</h4>
+            <p>There are currently no pending chef applications that match your criteria.</p>
+        </div>
     </section>
     
-    <footer class="text-center py-3" style="background: #fff; margin-top: 20px;">
-        <p>&copy; 2025 AI Recipe Generator. All rights reserved.</p>
-    </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chef Details Modal -->
+    <div class="modal fade" id="chefModal" tabindex="-1" aria-labelledby="chefModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chefModalLabel">Chef Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <div style="width: 150px; height: 150px; background-color: #ffcc00; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto;">
+                                👨‍🍳
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
